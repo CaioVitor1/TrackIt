@@ -34,6 +34,7 @@ export default function Cadastro() {
         .catch(err => {
             console.log(err);
             console.log("deu ruim")
+            alert("Você inseriu dados inválidos ou já cadastrados. Insira novamente!")
         })
         
     }
@@ -51,6 +52,10 @@ export default function Cadastro() {
                     (<button onClick={cadastrar2} type='submit'> Cadastrar </button>) : 
                     ( <button onClick={cadastrar} type='submit'> Cadastrar </button>) }
         
+                <Link to={`/`} >
+                    <h3> Já tem uma conta? Faça login</h3>
+               </Link>
+
              </InfosCadastro>
         </BodyCadastro>
     )

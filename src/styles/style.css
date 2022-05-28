@@ -4,4 +4,123 @@ body{
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
     font-family: 'Lexend Deca', sans-serif;
+    font-family: 'Playball', cursive;
+    box-sizing: border-box;
+}
+.habitosEstilo{
+    background: #E5E5E5;
+    margin-top: 100px;
+    
+  
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-bottom: 30px;
+}
+.header > h2{
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22.976px;
+    line-height: 29px;
+    color: #126BA5;   
+}
+.header div {
+    width: 40px;
+    height: 35px;
+    left: 317px;
+    top: 92px;
+    background: #52B6FF;
+    border-radius: 4.63636px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26.976px;
+    line-height: 34px;
+    text-align: center;
+    color: #FFFFFF;
+}
+.meusHabitos > h3{
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    color: #666666;
+}
+.formularioNovoHabito{
+    padding-top: 10px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+.formularioNovoHabito input{
+    width: 303px;
+    height: 45px;
+    background: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #DBDBDB;
+    margin-left: 10px;
+}
+.dias {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.dias > button {
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    left: 70px;
+    top: 218px;
+    background: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #DBDBDB;
+}
+.finalizarHabito{
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.finalizarHabito > div {
+    margin-right: 35px;
+    width: 84px;
+    height: 35px;
+    background: #52B6FF;
+    border-radius: 4.63636px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 20px;
+    text-align: center;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.finalizarHabito > h3{
+    margin-right: 35px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 20px;
+    text-align: center; 
+    color: #52B6FF;
+    
 }

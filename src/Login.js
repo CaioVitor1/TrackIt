@@ -1,19 +1,65 @@
 import React from "react";
 import logo from "./assets/logo.png"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { ThreeDots } from  'react-loader-spinner';
 
-export default function Login() {
+
+export default function Login({setToken}) {
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [carregando, setCarregando] = useState(false)
+    const navigate = useNavigate(); 
+    function logar2() {
+        alert("Preencha todos os campos!")
+    }
+    function logar() {
+        setCarregando(true)
+        const body = {
+                email: email,
+                password: senha
+            }
+            const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", body);
+            promise
+            .then(res =>{
+                setCarregando(false)
+                console.log(res.data);
+               setToken(res.data.token);
+               navigate('/habitos');
+
+            })
+            .catch(err => {
+                setCarregando(false)
+                console.log(err);
+                console.log("deu ruim")
+                alert("Você inseriu dados inválidos. Insira novamente!")
+            })
+    }
+
     return (
         <BodyLogin>
             <img src={logo} />
             <InfosLogin>
-                <input type="text" placeholder="email" />
-                <input type="text" placeholder="senha" />
-                <button> Entrar</button> 
+                {(carregando == false) && (
+                <>
+                <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+                <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <button onClick={logar}> Entrar</button> 
                <Link to={`/cadastro`} >
                     <h3> Não tem uma conta? Cadastre-se</h3>
                </Link>
+               </>)}
+
+               {(carregando == true) && (
+                <>
+                <input disabled type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+                <input disabled type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <button opacity={0.7} disabled> {<ThreeDots  width={51} color={"#ffffff"} />}</button> 
+                    <h3> Não tem uma conta? Cadastre-se</h3>
+               
+               </>)}
                
 
             </InfosLogin>
@@ -68,6 +114,9 @@ button {
     text-align: center;
     color: #FFFFFF;   
     margin-bottom: 25px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 h3 {
