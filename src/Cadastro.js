@@ -4,19 +4,23 @@ import react from "react";
 import { Link,  useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ThreeDots } from  'react-loader-spinner';
+
 
 export default function Cadastro() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [nome, setNome] = useState("");
     const [foto, setFoto] = useState("");
+    const [carregando, setCarregando] = useState(false)
+
     const navigate = useNavigate(); 
 
     function cadastrar2() {
         alert("Preencha todos os campos!")
     }
     function cadastrar() {
-        
+        setCarregando(true)
         const body = {
             email: email,
             name: nome,
@@ -28,10 +32,12 @@ export default function Cadastro() {
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body);
         promise
         .then(res =>{
+            setCarregando(false)
             console.log(res.data);
             navigate('/');
         })
         .catch(err => {
+            setCarregando(false)
             console.log(err);
             console.log("deu ruim")
             alert("Você inseriu dados inválidos ou já cadastrados. Insira novamente!")
@@ -43,14 +49,31 @@ export default function Cadastro() {
         <BodyCadastro>
             <img src={logo} />
             <InfosCadastro>
+                {(carregando == true) && (<>
+                    <input disabled type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+                    <input disabled type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                    <input disabled type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" />
+                    <input disabled type="text" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" />
+                    <button disabled opacity={0.7} type='submit'>{<ThreeDots  width={51} color={"#ffffff"} />} </button>
+                    </>
+                     )}
+                {(carregando == false) && (nome.length == 0 || email.length == 0 || foto.length == 0 || senha.length == 0 ) &&
+                (<>
                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
                 <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
                 <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" />
                 <input type="text" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" />
-               
-                {(nome.length == 0 || email.length == 0 || foto.length == 0 || senha.length == 0) ?
-                    (<button onClick={cadastrar2} type='submit'> Cadastrar </button>) : 
-                    ( <button onClick={cadastrar} type='submit'> Cadastrar </button>) }
+                <button onClick={cadastrar2} type='submit'> Cadastrar </button>
+                </>)}
+                {(carregando == false) && (nome.length !== 0 && email.length !== 0 && foto.length !== 0 && senha.length !== 0) &&
+                (<>
+                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+                <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" />
+                <input type="text" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" />
+                <button onClick={cadastrar} type='submit'> Cadastrar </button>
+                </>)
+                } 
         
                 <Link to={`/`} >
                     <h3> Já tem uma conta? Faça login</h3>
@@ -105,7 +128,10 @@ button {
     line-height: 26px;
     text-align: center;
     color: #FFFFFF;   
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
 }
 
 h3 {
