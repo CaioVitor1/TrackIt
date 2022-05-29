@@ -4,10 +4,60 @@ import Topo from "./Topo";
 import Footer from "./Footer";
 import { useState } from "react";
 import styled from 'styled-components';
+import { ThreeDots } from  'react-loader-spinner';
+import lixeira from "../src/assets/Vector.png"
 //import { useContext } from "react";
 //import UserContext from "../src/contexts/Usercontext";
 
-function SelecionandoData({dia, status, index, days, setDays}) {
+function DatasCadastradas({dia, index, id, token, habitosCadastrados, setHabitosCadastrados}) {
+
+    function deletarHabito() {
+        
+        console.log("vou deletar o Hábito de ID " + id);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+
+            }
+        }
+            const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config)
+            promise
+            .then(res =>{
+                console.log(res.data);
+               console.log("deletamos");
+               setHabitosCadastrados(habitosCadastrados.filter(post => post.id !== id))
+               
+            })
+            .catch(err => {
+                
+                console.log(err);
+                console.log("não deletamos");
+                alert("Você inseriu dados inválidos")
+            })
+
+
+    }
+
+    return (
+        <>
+        <Itens>
+            <h2> {dia}</h2>
+            <img onClick={() => deletarHabito()} src={lixeira} />
+        </Itens>
+        <Dias>
+            <button>D</button>
+            <button>S</button>
+            <button>T</button>
+            <button>Q</button>
+            <button>Q</button>
+            <button>S</button>
+            <button>S</button>
+        </Dias>
+        </>
+    )
+}
+
+function SelecionandoData({dia, status, index, days, setDays, carregando}) {
     const [selecionado, setSelecionado] = useState(status);
 
    
@@ -25,14 +75,18 @@ function SelecionandoData({dia, status, index, days, setDays}) {
 
     return (
         <>
-     {(selecionado == false) && (<button onClick={() => alterandoEstado()}> {dia} </button>) }  
-     {(selecionado == true) && (<button onClick={() => alterandoEstado2()}> {dia} </button>) }  
+        {(carregando == true) && ((<button opacity={0.7} disabled onClick={() => alterandoEstado()}> {dia} </button>))}
+     {(selecionado == false) && (carregando == false) && (<button onClick={() => alterandoEstado()}> {dia} </button>) }  
+     {(selecionado == true) && (carregando == false) && (<button onClick={() => alterandoEstado2()}> {dia} </button>) }  
 
      </> 
     )
 }
 
 export default function Habitos({token, fotoPerfil}) {
+    const [carregando, setCarregando] = useState(false);
+    const [habitosCadastrados, setHabitosCadastrados] = useState([])
+
     const diasDaSemana = [{day: "D", status: false},
                             {day: "S", status: false},
                             {day: "T", status: false},
@@ -54,6 +108,7 @@ console.log(habito)
 console.log("o token é: " + token)
 
     function enviandoHabito() {
+        setCarregando(true)
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -64,10 +119,14 @@ console.log("o token é: " + token)
             promise
             .then(res =>{
                 console.log(res.data);
+                setCarregando(false);
+                setHabitosCadastrados([...habitosCadastrados, habito])
             })
             .catch(err => {
+                setCarregando(false)
                 console.log(err);
-                console.log("deu ruim")
+                console.log("deu ruim");
+                alert("Você inseriu dados inválidos")
             })
         
     }
@@ -78,8 +137,12 @@ console.log("o token é: " + token)
         setNovoHabito(true)
         console.log("atualizamos o estado")
     }
+    function retirandoHabito() {
+        setNovoHabito(false)
+    }
 
-   /* useEffect(() => {
+    
+    useEffect(() => {
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -90,15 +153,19 @@ console.log("o token é: " + token)
         promise
         .then(res =>{
             console.log(res.data);
+            setHabitosCadastrados(res.data)
+          console.log(habitosCadastrados)
         })
         .catch(err => {
             console.log(err);
             console.log("deu ruim")
         })
-    })
-        */
+    }, [])
+
+        
     return(
         <>
+        {(habitosCadastrados.length == 0) && ( <>
             <Topo fotoPerfil={fotoPerfil} />
             <HabitosEstilo>
                 <Header>
@@ -111,16 +178,18 @@ console.log("o token é: " + token)
                 {(novoHabito == true) && ( 
                 <MeusHabitos>
                     <FormularioNovoHabito>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="nome do Hábito" />
+                        {(carregando == false) && ( <input opacity={0.7} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="nome do Hábito" />)}
+                        {(carregando == true) && ( <input disabled opacity={0.7} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="nome do Hábito" />)}
                         <Dias>
  {/*Fazer um ternario: se selecionado estiver true renderiza um botão, se tiver false renderiza outro botao*/}
-                           {diasDaSemana.map( (dia, index) => <SelecionandoData days={days} setDays={setDays} index={index} dia={dia.day} status={dia.status} />)}
+                           {diasDaSemana.map( (dia, index) => <SelecionandoData carregando={carregando} days={days} setDays={setDays} index={index} dia={dia.day} status={dia.status} />)}
                           
                             
                         </Dias>
                         <FinalizarHabito> 
-                            <h3>  Cancelar </h3> 
-                            <div onClick={() => enviandoHabito()}> Salvar </div>
+                            
+                         {(carregando == false) && ( <><h3 onClick={() => retirandoHabito()}>  Cancelar </h3><div onClick={() => enviandoHabito()}> Salvar </div></>)}   
+                         {(carregando == true) && (<><h3 opacity={0.7}>  Cancelar </h3><div disabled opacity={0.7}> {<ThreeDots  width={51} color={"#ffffff"} />} </div></>)} 
                         </FinalizarHabito>
                     </FormularioNovoHabito>
                     
@@ -131,6 +200,43 @@ console.log("o token é: " + token)
                
                </HabitosEstilo>
             <Footer />
+        </>)}
+       
+        {(habitosCadastrados.length !== 0) && (<>
+            <Topo fotoPerfil={fotoPerfil} />
+            <HabitosEstilo>
+                <Header>
+                    <h2>Meus hábitos</h2>
+                    <div onClick={adicionandoHabito}> + </div>
+                </Header>
+                <div className="listandoMeusHabitos">
+                    {habitosCadastrados.map((dia, index) => <DatasCadastradas habitosCadastrados={habitosCadastrados} setHabitosCadastrados={setHabitosCadastrados} token={token} id={dia.id} dia={dia.name} index={index} />)}
+                </div>
+                
+
+
+                {(novoHabito == true) && (
+                    <FormularioNovoHabito>
+                    {(carregando == false) && ( <input opacity={0.7} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="nome do Hábito" />)}
+                    {(carregando == true) && ( <input disabled opacity={0.7} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="nome do Hábito" />)}
+                    <Dias>
+
+                       {diasDaSemana.map( (dia, index) => <SelecionandoData carregando={carregando} days={days} setDays={setDays} index={index} dia={dia.day} status={dia.status} />)}
+                      
+                        
+                    </Dias>
+                    <FinalizarHabito> 
+                        
+                     {(carregando == false) && ( <><h3 onClick={() => retirandoHabito()}>  Cancelar </h3><div onClick={() => enviandoHabito()}> Salvar </div></>)}   
+                     {(carregando == true) && (<><h3 opacity={0.7}>  Cancelar </h3><div disabled opacity={0.7}> {<ThreeDots  width={51} color={"#ffffff"} />} </div></>)} 
+                    </FinalizarHabito>
+                </FormularioNovoHabito>
+                )}
+                
+            </HabitosEstilo>
+
+
+        </>)}
         </>
     )
 }
@@ -216,7 +322,7 @@ const Dias = styled.div `
         height: 30px;
         left: 70px;
         top: 218px;
-        background: red;
+        background: #FFFFFF;;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         font-family: 'Lexend Deca';
@@ -261,5 +367,19 @@ const FinalizarHabito = styled.div `
         line-height: 20px;
         text-align: center; 
         color: #52B6FF;
+    }
+`
+
+const Itens = styled.div `
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-left: 10px;
+
+    img {
+        width: 13px;
+        height: 15px;
+        margin-top: 10px;
+        margin-right: 10px;
     }
 `

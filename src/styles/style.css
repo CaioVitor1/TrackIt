@@ -7,3 +7,17 @@ body{
     font-family: 'Lexend Deca', sans-serif;
     box-sizing: border-box;
 }
+.listandoMeusHabitos{
+    background-color: white;
+    padding-bottom: 20px;
+}
+.listandoMeusHabitos h2{
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #666666;
+   
+}
+
