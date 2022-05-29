@@ -5,15 +5,16 @@ import { Link,  useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ThreeDots } from  'react-loader-spinner';
+//import { useContext } from "react";
+//import UserContext from "./contexts/Usercontext";
 
-
-export default function Cadastro() {
+export default function Cadastro({setFotoPerfil}) {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [nome, setNome] = useState("");
     const [foto, setFoto] = useState("");
     const [carregando, setCarregando] = useState(false)
-
+   
     const navigate = useNavigate(); 
 
     function cadastrar2() {
@@ -33,6 +34,7 @@ export default function Cadastro() {
         promise
         .then(res =>{
             setCarregando(false)
+            setFotoPerfil(foto)
             console.log(res.data);
             navigate('/');
         })

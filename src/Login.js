@@ -5,13 +5,15 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ThreeDots } from  'react-loader-spinner';
-
+//import { useContext } from "react";
+//import UserContext from "../src/contexts/Usercontext";
 
 export default function Login({setToken}) {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [carregando, setCarregando] = useState(false)
     const navigate = useNavigate(); 
+
     function logar2() {
         alert("Preencha todos os campos!")
     }
@@ -24,6 +26,7 @@ export default function Login({setToken}) {
             const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", body);
             promise
             .then(res =>{
+                console.log("deu bom")
                 setCarregando(false)
                 console.log(res.data);
                setToken(res.data.token);

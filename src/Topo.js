@@ -1,11 +1,13 @@
-import imageTopo from "./assets/imageTopo.png"
 import styled from "styled-components";
+//import { useContext } from "react";
+//import UserContext from "../src/contexts/Usercontext";
 
-export default function Topo() {
+export default function Topo({fotoPerfil}) {
+
     return (
         <TopoEstilo>
             <h2>TrackIt</h2>
-            <img src={imageTopo} />
+            <img src={fotoPerfil} />
         </TopoEstilo>
     )
 }
