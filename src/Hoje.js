@@ -25,6 +25,8 @@ function Lista({porcentagem, habitosConcluidos, setHabitosConcluidos, setPorcent
     }, [])
     console.log("habitos concluidos = " + habitosConcluidos);
        
+    
+
     function atualizar() {
         const config = {
             headers: {
@@ -55,13 +57,9 @@ function Lista({porcentagem, habitosConcluidos, setHabitosConcluidos, setPorcent
             const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, null, config)
             promise
             .then(res =>{
-                setHabitosConcluidos(habitosConcluidos + 1)
-                const porcentagem = ((habitosConcluidos/habitosHoje.length) * 100)
-               setUser(prevState => ({...prevState, porcentagem}))
-                console.log(res.data);
-              
+               
                atualizar()
-               setCartaMarcada(true);
+               setCartaMarcada(true)
             })
             .catch(err => {
                
@@ -83,16 +81,9 @@ function Lista({porcentagem, habitosConcluidos, setHabitosConcluidos, setPorcent
             const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, null, config)
             promise
             .then(res =>{
-                setHabitosConcluidos(habitosConcluidos - 1)
-                const porcentagem = ((habitosConcluidos/habitosHoje.length) * 100)
-               setUser(prevState => ({...prevState, porcentagem}))
-                console.log(res.data);
-               console.log("deu bom");
         
                 atualizar()
-                
                 setCartaMarcada(false)
-                console.log(porcentagem)
             })
             .catch(err => {
                
@@ -130,6 +121,16 @@ export default function Hoje() {
     const [habitosHoje, setHabitosHoje] = useState([]);
     const setPorcentagem = () => 0
     
+    useEffect(() => {
+        const habitosHojeDone = habitosHoje.filter(habitoHoje => habitoHoje.done === true);
+        if(habitosHoje.length){
+            const newPorcentagem = ((habitosHojeDone.length/habitosHoje.length) *100)
+            
+            setUser(prevState => ({...prevState, porcentagem: newPorcentagem.toFixed(0)}) )
+        }
+       
+
+    }, [habitosHoje])
 
        
     
