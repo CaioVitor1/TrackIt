@@ -30,7 +30,7 @@ export default function Login({setToken}) {
                 setCarregando(false)
                 console.log(res.data);
                setToken(res.data.token);
-               navigate('/habitos');
+               navigate('/hoje');
 
             })
             .catch(err => {

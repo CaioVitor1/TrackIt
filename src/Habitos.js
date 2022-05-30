@@ -235,7 +235,7 @@ console.log("o token é: " + token)
                 
             </HabitosEstilo>
 
-
+            <Footer />
         </>)}
         </>
     )

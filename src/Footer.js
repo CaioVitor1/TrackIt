@@ -1,11 +1,29 @@
 import styled from "styled-components";
 import { Link,  useNavigate } from 'react-router-dom';
+import { CircularProgressbar,  buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 
 export default function Footer () {
     return (
         <FooterEstilo>
             <Link style={{ textDecoration: 'none' }} to={`/habitos`} ><h3> Hábitos</h3></Link>
-            <Link style={{ textDecoration: 'none' }} to={`/hoje`} ><h3> Hoje</h3></Link>
+            <Link style={{ textDecoration: 'none' }} to={`/hoje`} >
+            <ProgressBar>
+                    <CircularProgressbar
+                        /*value={user.percentage}*/
+                        text="Hoje"
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
+                            backgroundColor: "#52B6FF",
+                            textColor: "#fff",
+                            pathColor: "#fff",
+                            trailColor: "transparent"
+                        })}
+                    />
+                </ProgressBar>
+                </Link>
             <Link style={{ textDecoration: 'none' }} to={`/historico`} ><h3> Histórico </h3></Link>
         </FooterEstilo>
     )
@@ -33,4 +51,16 @@ const FooterEstilo =  styled.div`
         color: #52B6FF;
     }
 
+`
+const ProgressBar = styled.div`
+    width:91px;
+    height: 91px;
+    position: fixed;
+    bottom: -40px;
+    left:50%;
+     margin: 0 auto; 
+    font-family: 'Lexend Deca', sans-serif;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    
 `
