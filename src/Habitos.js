@@ -8,20 +8,13 @@ import { ThreeDots } from  'react-loader-spinner';
 import lixeira from "../src/assets/Vector.png"
 import { useContext } from "react";
 import UserContext from "../src/contexts/Usercontext";
+import styledComponents from "styled-components";
 
 function DatasCadastradas({dia, index, id, token1, habitosCadastrados, setHabitosCadastrados, diasCheck}) {
-    console.log("os dias cadastrados são: " + diasCheck + "e o index é: " + index)
-    console.log(diasCheck)
-
-   /* function EscolhendoDias() {
-        for(let i = 0; i <diasCheck.length;i++) {
-            if(diasCheck[i] == 0) {
-                return <Selecionada>D</Selecionada>
-            } else {
-                return <NaoSelecionada> D </NaoSelecionada>
-            }
-        }
-    }*/
+ 
+    const [diasPossiveis, setDiasPossiveis] = useState({0: "D", 1: "S",  2: "T", 3: "Q",  4: "Q",
+    5: "S",  6: "S"} )
+   
 
     function deletarHabito() {
         let confirmacao = prompt("Você tem certeza que deseja apagar esse hábito? digite 'sim' para confirmar")
@@ -58,14 +51,16 @@ function DatasCadastradas({dia, index, id, token1, habitosCadastrados, setHabito
             <img onClick={() => deletarHabito()} src={lixeira} />
         </Itens>
         <DiasCadastrados>
-            
-         {(diasCheck == 0) ? (<Selecionada>D</Selecionada>) : (<NaoSelecionada> D </NaoSelecionada>) }   
-         {(diasCheck == 1) ? (<Selecionada> S </Selecionada>) : (<NaoSelecionada>S</NaoSelecionada>) } 
-         {(diasCheck == 2) ? (<Selecionada> T </Selecionada>) : (<NaoSelecionada>T</NaoSelecionada>) } 
-         {(diasCheck == 3) ? (<Selecionada> Q </Selecionada>) : (<NaoSelecionada>Q</NaoSelecionada>) } 
-         {(diasCheck == 4) ? (<Selecionada> Q </Selecionada>) : (<NaoSelecionada>Q</NaoSelecionada>) } 
-         {(diasCheck == 5) ? (<Selecionada> S </Selecionada>) : (<NaoSelecionada>S</NaoSelecionada>) } 
-         {(diasCheck == 6) ? (<Selecionada> S </Selecionada>) : (<NaoSelecionada>S</NaoSelecionada>) } 
+            {Object.keys(diasPossiveis).map(diaPossivel => {
+               const diaNum = parseInt(diaPossivel)
+                
+                return(diasCheck.includes(diaNum)
+                ? <Selecionada> {diasPossiveis[diaPossivel]}</Selecionada> 
+                : <NaoSelecionada> {diasPossiveis[diaPossivel]}</NaoSelecionada> )
+                
+
+            })}
+        
         </DiasCadastrados>
         </>
     )
@@ -249,9 +244,9 @@ console.log("o token é: " + token1)
                     <h2>Meus hábitos</h2>
                     <div onClick={adicionandoHabito}> + </div>
                 </Header>
-                <div className="listandoMeusHabitos">
+                <ListandoMeusHabitos>
                     {habitosCadastrados.map((dia, index) => <DatasCadastradas habitosCadastrados={habitosCadastrados} setHabitosCadastrados={setHabitosCadastrados} token1={token1} id={dia.id} dia={dia.name} index={index} diasCheck={dia.days} />)}
-                </div>
+                </ListandoMeusHabitos>
                 
 
 
@@ -446,4 +441,18 @@ const DiasCadastrados = styled.div `
         margin-top: 10px;
         margin-left: 10px;
 
+`
+
+const ListandoMeusHabitos = styledComponents.div`
+        background-color: white;
+        padding-bottom: 20px;
+
+    h2{
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19.976px;
+        line-height: 25px;
+        color: #666666;
+    }
 `

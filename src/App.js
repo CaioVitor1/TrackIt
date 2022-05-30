@@ -10,7 +10,12 @@ import UserContext from "./contexts/Usercontext";
 
 export default function App() {
     
-    const [user, setUser] = useState("")
+    const [user, setUser] = useState({
+        image: "",
+        token1: "",
+        porcentagem:0
+    })
+    
     return (
         <UserContext.Provider value={{ user, setUser }}>
          
