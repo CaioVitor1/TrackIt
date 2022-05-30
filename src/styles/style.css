@@ -40,6 +40,15 @@ body{
     line-height: 22px;
     color: #BABABA; 
 }
+.dataAtual h4{
+    margin-top: 5px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    color: #8FC549;
+}
 .descricao {
     background-color: white;
     margin-top: 10px;
@@ -84,4 +93,23 @@ body{
     justify-content: center;
     align-items: center;
 }
-
+.corpo {
+    margin-top: 100px;
+}
+.corpo h2{
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22.976px;
+    line-height: 29px;
+    color: #126BA5;
+}
+.corpo h3 {
+    margin-top: 10px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    color: #666666;    
+}

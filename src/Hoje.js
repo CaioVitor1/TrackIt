@@ -9,9 +9,29 @@ import ok from "../src/assets/ok.png"
 import { useContext } from "react";
 import UserContext from "../src/contexts/Usercontext";
 
-function Lista({id, token1, nome, sequenciaAtual, maiorSequencia, marcada, habitosHoje, setHabitosHoje}) {
-    const [cartaMarcada,setCartaMarcada] = useState(marcada);
+function Lista({id, token1, nome, sequenciaAtual, maiorSequencia, marcada, habitosHoje, setHabitosHoje, habitosConcluidos, setHabitosConcluidos}) {
+    const [cartaMarcada,setCartaMarcada] = useState(false);
    
+    function atualizar() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token1}`
+
+            }
+        }
+        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+        promise
+        .then(res =>{
+            console.log(res.data);
+            setHabitosHoje(res.data)
+            console.log("atualizamos")
+        })
+        .catch(err => {
+            console.log(err);
+            console.log("deu ruim")
+        })
+    }
+
     function marcarHabito() {
         const config = {
             headers: {
@@ -24,6 +44,10 @@ function Lista({id, token1, nome, sequenciaAtual, maiorSequencia, marcada, habit
             .then(res =>{
                 console.log(res.data);
                console.log("deu bom");
+               setCartaMarcada(true);
+               setHabitosConcluidos(habitosConcluidos + 1)
+               console.log("temos " + habitosConcluidos + "hábitos concluídos")
+               atualizar()
               
             })
             .catch(err => {
@@ -48,7 +72,10 @@ function Lista({id, token1, nome, sequenciaAtual, maiorSequencia, marcada, habit
             .then(res =>{
                 console.log(res.data);
                console.log("deu bom");
-                
+               setHabitosConcluidos(habitosConcluidos - 1)
+               console.log("temos " + habitosConcluidos + "hábitos concluídos")
+                atualizar()
+                setCartaMarcada(false)
                 
             })
             .catch(err => {
@@ -85,7 +112,9 @@ export default function Hoje() {
 
     const [ habitosConcluidos, setHabitosConcluidos] = useState(0);
     const [habitosHoje, setHabitosHoje] = useState([]);
+    
 
+       
     
 
     useEffect(() => {
@@ -111,12 +140,15 @@ export default function Hoje() {
     return (
         <>
        <Topo />
+
        <div className="dataAtual" >
-       <h1> {dia},  {data} </h1>
-       {(habitosConcluidos == 0) && (<h3>Nenhum hábito concluído ainda</h3>)}    
+            <h1> {dia},  {data} </h1>
+            {(habitosConcluidos == 0) && (<h3>Nenhum hábito concluído ainda</h3>)}  
+            {(habitosConcluidos !== 0) && (<h4> Porcentagem dos hábitos concluídos</h4>)}   
        </div>
+
        <div className="listagemDeHabitos">
-           {habitosHoje.map((habito, index) => <Lista token={token1} habitosHoje={habitosHoje} setHabitosHoje={setHabitosHoje} id={habito.id} marcada={habito.done} nome={habito.name} sequenciaAtual={habito.currentSequence} maiorSequencia={habito.highestSequence} />)}
+           {habitosHoje.map((habito, index) => <Lista habitosConcluidos={habitosConcluidos} setHabitosConcluidos={setHabitosConcluidos} token1={token1} habitosHoje={habitosHoje} setHabitosHoje={setHabitosHoje} id={habito.id} marcada={habito.done} nome={habito.name} sequenciaAtual={habito.currentSequence} maiorSequencia={habito.highestSequence} />)}
        </div>
         <Footer />
         </>

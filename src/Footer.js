@@ -2,16 +2,18 @@ import styled from "styled-components";
 import { Link,  useNavigate } from 'react-router-dom';
 import { CircularProgressbar,  buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
+import { useContext } from "react";
+import UserContext from "../src/contexts/Usercontext";
 
 export default function Footer () {
+    const { user, setUser } = useContext(UserContext);
     return (
         <FooterEstilo>
             <Link style={{ textDecoration: 'none' }} to={`/habitos`} ><h3> Hábitos</h3></Link>
             <Link style={{ textDecoration: 'none' }} to={`/hoje`} >
             <ProgressBar>
                     <CircularProgressbar
-                        /*value={user.percentage}*/
+                        value={user.porcentagem}
                         text="Hoje"
                         background
                         backgroundPadding={6}

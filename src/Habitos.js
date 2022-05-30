@@ -9,11 +9,24 @@ import lixeira from "../src/assets/Vector.png"
 import { useContext } from "react";
 import UserContext from "../src/contexts/Usercontext";
 
-function DatasCadastradas({dia, index, id, token1, habitosCadastrados, setHabitosCadastrados}) {
+function DatasCadastradas({dia, index, id, token1, habitosCadastrados, setHabitosCadastrados, diasCheck}) {
+    console.log("os dias cadastrados são: " + diasCheck + "e o index é: " + index)
+    console.log(diasCheck)
+
+   /* function EscolhendoDias() {
+        for(let i = 0; i <diasCheck.length;i++) {
+            if(diasCheck[i] == 0) {
+                return <Selecionada>D</Selecionada>
+            } else {
+                return <NaoSelecionada> D </NaoSelecionada>
+            }
+        }
+    }*/
 
     function deletarHabito() {
-        
-        console.log("vou deletar o Hábito de ID " + id);
+        let confirmacao = prompt("Você tem certeza que deseja apagar esse hábito? digite 'sim' para confirmar")
+        if(confirmacao =="sim" ) {
+            console.log("vou deletar o Hábito de ID " + id);
         const config = {
             headers: {
                 Authorization: `Bearer ${token1}`
@@ -34,25 +47,26 @@ function DatasCadastradas({dia, index, id, token1, habitosCadastrados, setHabito
                 console.log("não deletamos");
                 alert("Você inseriu dados inválidos")
             })
-
+        } 
 
     }
-
+    
     return (
         <>
         <Itens>
             <h2> {dia}</h2>
             <img onClick={() => deletarHabito()} src={lixeira} />
         </Itens>
-        <Dias>
-            <button>D</button>
-            <button>S</button>
-            <button>T</button>
-            <button>Q</button>
-            <button>Q</button>
-            <button>S</button>
-            <button>S</button>
-        </Dias>
+        <DiasCadastrados>
+            
+         {(diasCheck == 0) ? (<Selecionada>D</Selecionada>) : (<NaoSelecionada> D </NaoSelecionada>) }   
+         {(diasCheck == 1) ? (<Selecionada> S </Selecionada>) : (<NaoSelecionada>S</NaoSelecionada>) } 
+         {(diasCheck == 2) ? (<Selecionada> T </Selecionada>) : (<NaoSelecionada>T</NaoSelecionada>) } 
+         {(diasCheck == 3) ? (<Selecionada> Q </Selecionada>) : (<NaoSelecionada>Q</NaoSelecionada>) } 
+         {(diasCheck == 4) ? (<Selecionada> Q </Selecionada>) : (<NaoSelecionada>Q</NaoSelecionada>) } 
+         {(diasCheck == 5) ? (<Selecionada> S </Selecionada>) : (<NaoSelecionada>S</NaoSelecionada>) } 
+         {(diasCheck == 6) ? (<Selecionada> S </Selecionada>) : (<NaoSelecionada>S</NaoSelecionada>) } 
+        </DiasCadastrados>
         </>
     )
 }
@@ -76,8 +90,8 @@ function SelecionandoData({dia, status, index, days, setDays, carregando}) {
     return (
         <>
         {(carregando == true) && ((<button opacity={0.7} disabled onClick={() => alterandoEstado()}> {dia} </button>))}
-     {(selecionado == false) && (carregando == false) && (<button onClick={() => alterandoEstado()}> {dia} </button>) }  
-     {(selecionado == true) && (carregando == false) && (<button onClick={() => alterandoEstado2()}> {dia} </button>) }  
+     {(selecionado == false) && (carregando == false) && (<NaoSelecionada onClick={() => alterandoEstado()}> {dia} </NaoSelecionada>) }  
+     {(selecionado == true) && (carregando == false) && (<Selecionada onClick={() => alterandoEstado2()} > {dia} </Selecionada>) }  
 
      </> 
     )
@@ -86,6 +100,7 @@ function SelecionandoData({dia, status, index, days, setDays, carregando}) {
 export default function Habitos() {
     const [carregando, setCarregando] = useState(false);
     const [habitosCadastrados, setHabitosCadastrados] = useState([]);
+
     const { user } = useContext(UserContext);
     const {token1} = user;
 
@@ -109,6 +124,26 @@ console.log(habito)
 
 console.log("o token é: " + token1)
 
+    function atualizar() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token1}`
+
+            }
+        }
+        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        promise
+        .then(res =>{
+            console.log(res.data);
+            setHabitosCadastrados(res.data)
+          console.log(habitosCadastrados)
+        })
+        .catch(err => {
+            console.log(err);
+            console.log("deu ruim")
+        })
+    }
+
     function enviandoHabito() {
         setCarregando(true)
         const config = {
@@ -122,7 +157,10 @@ console.log("o token é: " + token1)
             .then(res =>{
                 console.log(res.data);
                 setCarregando(false);
-                setHabitosCadastrados([...habitosCadastrados, habito])
+                setName("");
+                setDays("");
+                setNovoHabito(false);
+                atualizar()
             })
             .catch(err => {
                 setCarregando(false)
@@ -212,7 +250,7 @@ console.log("o token é: " + token1)
                     <div onClick={adicionandoHabito}> + </div>
                 </Header>
                 <div className="listandoMeusHabitos">
-                    {habitosCadastrados.map((dia, index) => <DatasCadastradas habitosCadastrados={habitosCadastrados} setHabitosCadastrados={setHabitosCadastrados} token1={token1} id={dia.id} dia={dia.name} index={index} />)}
+                    {habitosCadastrados.map((dia, index) => <DatasCadastradas habitosCadastrados={habitosCadastrados} setHabitosCadastrados={setHabitosCadastrados} token1={token1} id={dia.id} dia={dia.name} index={index} diasCheck={dia.days} />)}
                 </div>
                 
 
@@ -318,22 +356,6 @@ const Dias = styled.div `
         margin-top: 10px;
         margin-left: 10px;
 
-    button {
-        margin-right: 5px;
-        width: 30px;
-        height: 30px;
-        left: 70px;
-        top: 218px;
-        background: #FFFFFF;;
-        border: 1px solid #D5D5D5;
-        border-radius: 5px;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19.976px;
-        line-height: 25px;
-        color: #DBDBDB;
-        }
 `
 
 const FinalizarHabito = styled.div `
@@ -384,4 +406,44 @@ const Itens = styled.div `
         margin-top: 10px;
         margin-right: 10px;
     }
+`
+
+const Selecionada = styled.button`
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    left: 70px;
+    top: 218px;
+    background: #CFCFCF;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #FFFFFF;;
+`
+
+const NaoSelecionada = styled.button `
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    left: 70px;
+    top: 218px;
+    background: #FFFFFF;;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    color: #DBDBDB;
+`
+const DiasCadastrados = styled.div `
+        display: flex;
+        margin-top: 10px;
+        margin-left: 10px;
+
 `

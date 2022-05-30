@@ -34,7 +34,8 @@ export default function Login() {
                setUser(
                 {   
                     image: res.data.image,
-                    token1: res.data.token
+                    token1: res.data.token,
+                    porcentagem:0
                 },
             );
                navigate('/hoje');
