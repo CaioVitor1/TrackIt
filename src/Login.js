@@ -5,14 +5,15 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ThreeDots } from  'react-loader-spinner';
-//import { useContext } from "react";
-//import UserContext from "../src/contexts/Usercontext";
+import { useContext } from "react";
+import UserContext from "../src/contexts/Usercontext";
 
-export default function Login({setToken}) {
+export default function Login() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [carregando, setCarregando] = useState(false)
     const navigate = useNavigate(); 
+    const { user, setUser } = useContext(UserContext);
 
     function logar2() {
         alert("Preencha todos os campos!")
@@ -29,7 +30,13 @@ export default function Login({setToken}) {
                 console.log("deu bom")
                 setCarregando(false)
                 console.log(res.data);
-               setToken(res.data.token);
+               
+               setUser(
+                {   
+                    image: res.data.image,
+                    token1: res.data.token
+                },
+            );
                navigate('/hoje');
 
             })

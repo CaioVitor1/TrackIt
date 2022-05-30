@@ -6,23 +6,24 @@ import Cadastro from "./Cadastro";
 import Habitos from "./Habitos";
 import Hoje from "./Hoje";
 import Historico from "./Historico";
-//import UserContext from "./contexts/Usercontext";
-// os hábitos precisam ser uma variável global
-export default function App() {
-    const [token, setToken] = useState("")
-    const [fotoPerfil, setFotoPerfil] = useState("") 
+import UserContext from "./contexts/Usercontext";
 
+export default function App() {
+    
+    const [user, setUser] = useState("")
     return (
+        <UserContext.Provider value={{ user, setUser }}>
+         
         <BrowserRouter>
-            
             <Routes>
-                <Route path="/" element={<Login setToken={setToken} />} /> 
-                <Route path="/cadastro" element={<Cadastro setFotoPerfil={setFotoPerfil} />} />
-                <Route path="/habitos" element={<Habitos token={token} fotoPerfil={fotoPerfil} />} />
-                <Route path="/hoje" element={<Hoje token={token} />} />
+                <Route path="/" element={<Login />} /> 
+                <Route path="/cadastro" element={<Cadastro />} />
+                <Route path="/habitos" element={<Habitos />} />
+                <Route path="/hoje" element={<Hoje />} />
                 <Route path="/historico" element={<Historico />} />
             </Routes>
-
         </BrowserRouter>
+        </UserContext.Provider>
+        
     )
 }

@@ -8,7 +8,7 @@ import { ThreeDots } from  'react-loader-spinner';
 //import { useContext } from "react";
 //import UserContext from "./contexts/Usercontext";
 
-export default function Cadastro({setFotoPerfil}) {
+export default function Cadastro() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [nome, setNome] = useState("");
@@ -34,7 +34,7 @@ export default function Cadastro({setFotoPerfil}) {
         promise
         .then(res =>{
             setCarregando(false)
-            setFotoPerfil(foto)
+            
             console.log(res.data);
             navigate('/');
         })

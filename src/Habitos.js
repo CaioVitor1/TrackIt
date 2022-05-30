@@ -6,17 +6,17 @@ import { useState } from "react";
 import styled from 'styled-components';
 import { ThreeDots } from  'react-loader-spinner';
 import lixeira from "../src/assets/Vector.png"
-//import { useContext } from "react";
-//import UserContext from "../src/contexts/Usercontext";
+import { useContext } from "react";
+import UserContext from "../src/contexts/Usercontext";
 
-function DatasCadastradas({dia, index, id, token, habitosCadastrados, setHabitosCadastrados}) {
+function DatasCadastradas({dia, index, id, token1, habitosCadastrados, setHabitosCadastrados}) {
 
     function deletarHabito() {
         
         console.log("vou deletar o Hábito de ID " + id);
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token1}`
 
             }
         }
@@ -83,9 +83,11 @@ function SelecionandoData({dia, status, index, days, setDays, carregando}) {
     )
 }
 
-export default function Habitos({token, fotoPerfil}) {
+export default function Habitos() {
     const [carregando, setCarregando] = useState(false);
-    const [habitosCadastrados, setHabitosCadastrados] = useState([])
+    const [habitosCadastrados, setHabitosCadastrados] = useState([]);
+    const { user } = useContext(UserContext);
+    const {token1} = user;
 
     const diasDaSemana = [{day: "D", status: false},
                             {day: "S", status: false},
@@ -105,13 +107,13 @@ export default function Habitos({token, fotoPerfil}) {
    
 console.log(habito)
 
-console.log("o token é: " + token)
+console.log("o token é: " + token1)
 
     function enviandoHabito() {
         setCarregando(true)
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token1}`
 
             }
         }
@@ -132,7 +134,7 @@ console.log("o token é: " + token)
     }
   
 
-    console.log(token)
+    console.log(token1)
     function adicionandoHabito() {
         setNovoHabito(true)
         console.log("atualizamos o estado")
@@ -145,7 +147,7 @@ console.log("o token é: " + token)
     useEffect(() => {
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token1}`
 
             }
         }
@@ -166,7 +168,7 @@ console.log("o token é: " + token)
     return(
         <>
         {(habitosCadastrados.length == 0) && ( <>
-            <Topo fotoPerfil={fotoPerfil} />
+            <Topo />
             <HabitosEstilo>
                 <Header>
                     <h2>Meus hábitos</h2>
@@ -203,14 +205,14 @@ console.log("o token é: " + token)
         </>)}
        
         {(habitosCadastrados.length !== 0) && (<>
-            <Topo fotoPerfil={fotoPerfil} />
+            <Topo />
             <HabitosEstilo>
                 <Header>
                     <h2>Meus hábitos</h2>
                     <div onClick={adicionandoHabito}> + </div>
                 </Header>
                 <div className="listandoMeusHabitos">
-                    {habitosCadastrados.map((dia, index) => <DatasCadastradas habitosCadastrados={habitosCadastrados} setHabitosCadastrados={setHabitosCadastrados} token={token} id={dia.id} dia={dia.name} index={index} />)}
+                    {habitosCadastrados.map((dia, index) => <DatasCadastradas habitosCadastrados={habitosCadastrados} setHabitosCadastrados={setHabitosCadastrados} token1={token1} id={dia.id} dia={dia.name} index={index} />)}
                 </div>
                 
 

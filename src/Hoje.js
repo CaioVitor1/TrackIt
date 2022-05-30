@@ -6,14 +6,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import ok from "../src/assets/ok.png"
+import { useContext } from "react";
+import UserContext from "../src/contexts/Usercontext";
 
-function Lista({id, token, nome, sequenciaAtual, maiorSequencia, marcada, habitosHoje, setHabitosHoje}) {
+function Lista({id, token1, nome, sequenciaAtual, maiorSequencia, marcada, habitosHoje, setHabitosHoje}) {
     const [cartaMarcada,setCartaMarcada] = useState(marcada);
-
+   
     function marcarHabito() {
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token1}`
 
             }
         }
@@ -34,10 +36,10 @@ function Lista({id, token, nome, sequenciaAtual, maiorSequencia, marcada, habito
     }
 
     function desmarcarHabito() {
-        
+       
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token1}`
 
             }
         }
@@ -46,7 +48,7 @@ function Lista({id, token, nome, sequenciaAtual, maiorSequencia, marcada, habito
             .then(res =>{
                 console.log(res.data);
                console.log("deu bom");
-            
+                
                 
             })
             .catch(err => {
@@ -74,10 +76,12 @@ function Lista({id, token, nome, sequenciaAtual, maiorSequencia, marcada, habito
     )
 }
 
-export default function Hoje({token}) {
+export default function Hoje() {
     const dataPortugues = dayjs().locale("pt-br");
     const dia = dataPortugues.format("dddd");
     const Dia = dia.charAt(0).toUpperCase() + dia.slice(1);
+    const { user } = useContext(UserContext);
+    const {token1} = user;
 
     const [ habitosConcluidos, setHabitosConcluidos] = useState(0);
     const [habitosHoje, setHabitosHoje] = useState([]);
@@ -87,7 +91,7 @@ export default function Hoje({token}) {
     useEffect(() => {
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token1}`
 
             }
         }
@@ -112,7 +116,7 @@ export default function Hoje({token}) {
        {(habitosConcluidos == 0) && (<h3>Nenhum hábito concluído ainda</h3>)}    
        </div>
        <div className="listagemDeHabitos">
-           {habitosHoje.map((habito, index) => <Lista token={token} habitosHoje={habitosHoje} setHabitosHoje={setHabitosHoje} id={habito.id} marcada={habito.done} nome={habito.name} sequenciaAtual={habito.currentSequence} maiorSequencia={habito.highestSequence} />)}
+           {habitosHoje.map((habito, index) => <Lista token={token1} habitosHoje={habitosHoje} setHabitosHoje={setHabitosHoje} id={habito.id} marcada={habito.done} nome={habito.name} sequenciaAtual={habito.currentSequence} maiorSequencia={habito.highestSequence} />)}
        </div>
         <Footer />
         </>
