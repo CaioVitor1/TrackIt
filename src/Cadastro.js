@@ -5,8 +5,6 @@ import { Link,  useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ThreeDots } from  'react-loader-spinner';
-//import { useContext } from "react";
-//import UserContext from "./contexts/Usercontext";
 
 export default function Cadastro() {
     const [email, setEmail] = useState("");
@@ -51,7 +49,7 @@ export default function Cadastro() {
         <BodyCadastro>
             <img src={logo} />
             <InfosCadastro>
-                {(carregando == true) && (<>
+                {(carregando === true) && (<>
                     <input disabled type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
                     <input disabled type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
                     <input disabled type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" />

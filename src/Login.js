@@ -3,7 +3,7 @@ import logo from "./assets/logo.png"
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ThreeDots } from  'react-loader-spinner';
 import { useContext } from "react";
 import UserContext from "../src/contexts/Usercontext";
