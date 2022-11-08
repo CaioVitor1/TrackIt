@@ -59,18 +59,18 @@ export default function Cadastro() {
                     <button disabled opacity={0.7} type='submit'>{<ThreeDots  width={51} color={"#ffffff"} />} </button>
                     </>
                      )}
-                {(carregando == false) && (nome.length == 0 || email.length == 0 || foto.length == 0 || senha.length == 0 ) &&
+                {(carregando === false) && (nome.length === 0 || email.length === 0 || foto.length === 0 || senha.length === 0 ) &&
                 (<>
                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
-                <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
                 <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" />
                 <input type="text" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" />
                 <button onClick={cadastrar2} type='submit'> Cadastrar </button>
                 </>)}
-                {(carregando == false) && (nome.length !== 0 && email.length !== 0 && foto.length !== 0 && senha.length !== 0) &&
+                {(carregando === false) && (nome.length !== 0 && email.length !== 0 && foto.length !== 0 && senha.length !== 0) &&
                 (<>
                  <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
-                <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
                 <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" />
                 <input type="text" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" />
                 <button onClick={cadastrar} type='submit'> Cadastrar </button>
@@ -115,8 +115,11 @@ input {
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-    color: #DBDBDB;
+    color: black;
     padding-left: 10px;
+    ::placeholder{
+    color:black;
+}
 }
 button {
     width: 303px;

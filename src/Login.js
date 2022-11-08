@@ -48,25 +48,25 @@ export default function Login() {
                 alert("Você inseriu dados inválidos. Insira novamente!")
             })
     }
-
+console.log("está aqui")
     return (
         <BodyLogin>
             <img src={logo} />
             <InfosLogin>
-                {(carregando == false) && (
+                {(carregando === false) && (
                 <>
                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
-                <input type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
                 <button onClick={logar}> Entrar</button> 
                <Link to={`/cadastro`} >
                     <h3> Não tem uma conta? Cadastre-se</h3>
                </Link>
                </>)}
 
-               {(carregando == true) && (
+               {(carregando === true) && (
                 <>
                 <input disabled type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
-                <input disabled type="text" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
+                <input disabled type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="senha" />
                 <button opacity={0.7} disabled> {<ThreeDots  width={51} color={"#ffffff"} />}</button> 
                     <h3> Não tem uma conta? Cadastre-se</h3>
                
@@ -109,8 +109,11 @@ input {
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-    color: #DBDBDB;
+    color: black;
     padding-left: 10px;
+    ::placeholder{
+    color:black;
+}
 }
 button {
     width: 303px;
@@ -129,6 +132,7 @@ button {
     justify-content: center;
     align-items: center;
 }
+
 
 h3 {
     font-family: 'Lexend Deca';
